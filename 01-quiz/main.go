@@ -8,6 +8,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 )
 
 const questionField = 0
@@ -23,6 +24,20 @@ func main() {
 		log.Fatalln(err)
 	}
 
+	var testChan = make(chan struct{})
+	go takeTest(file, testChan)
+	var timerChan = make(chan struct{})
+	go runTimer(timerChan)
+
+	select {
+	case <-testChan:
+		return
+	case <-timerChan:
+		return
+	}
+}
+
+func takeTest(file *os.File, testChan chan struct{}) {
 	reader := csv.NewReader(file)
 	rows, _ := reader.ReadAll()
 
@@ -47,4 +62,13 @@ func main() {
 	}
 
 	fmt.Printf("You got %d/%d\n", correct, len(rows))
+
+	testChan <- struct{}{}
+}
+
+func runTimer(timerChan chan struct{}) {
+	time.Sleep(30 * time.Second)
+
+	fmt.Println("Sorry, you ran out of time")
+	timerChan <- struct{}{}
 }

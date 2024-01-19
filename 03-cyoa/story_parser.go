@@ -19,7 +19,7 @@ type Page struct {
 }
 type Story map[string]Page
 
-func parseStory(fileName *string) ([]byte, error) {
+func parseStory(fileName *string) (Story, error) {
 	storyData, err := os.ReadFile(*storyFile)
 	if err != nil {
 		return nil, err
@@ -31,5 +31,5 @@ func parseStory(fileName *string) ([]byte, error) {
 		return nil, err
 	}
 
-	return storyData, nil
+	return storyJson, nil
 }

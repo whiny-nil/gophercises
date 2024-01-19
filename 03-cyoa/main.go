@@ -17,9 +17,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Printf("intro: \n%s", storyJson)
-
-	storyHandler := newStoryHandler()
+	storyHandler := newStoryHandler(storyJson)
 	mux := http.NewServeMux()
 	mux.Handle("/", storyHandler)
 

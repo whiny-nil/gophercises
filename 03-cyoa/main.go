@@ -1,8 +1,12 @@
 package main
 
 import (
+	"encoding/json"
+	"flag"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 )
 
 type helloWorldHandler struct{}
@@ -15,7 +19,38 @@ func NewHelloWorldHandler() *helloWorldHandler {
 	return new(helloWorldHandler)
 }
 
+type Title string
+type Story []string
+type Option struct {
+	Text string
+	Arc  string
+}
+type Options []Option
+type Page struct {
+	Title   Title
+	Story   Story
+	Options Options
+}
+type Book map[string]Page
+
+var storyFile = flag.String("f", "stories/gopher.json", "a story file to use")
+
 func main() {
+	flag.Parse()
+
+	content, err := os.ReadFile(*storyFile)
+	if err != nil {
+		log.Fatal("Error opening file: ", err)
+	}
+
+	var book Book
+	err = json.Unmarshal(content, &book)
+	if err != nil {
+		log.Fatal("Error unmarshalling data: ", err)
+	}
+
+	log.Printf("intro: \n%s", book["intro"])
+
 	helloHandler := NewHelloWorldHandler()
 	mux := http.NewServeMux()
 	mux.Handle("/", helloHandler)

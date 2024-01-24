@@ -5,6 +5,10 @@ type Link struct {
 	Text string
 }
 
-func Extract(html string) Link {
-	return Link{"/link", "Link text"}
+func Extract(html string) []Link {
+	retVal := []Link{}
+
+	retVal = append(retVal, Link{"/link", "Link text"})
+
+	return retVal
 }

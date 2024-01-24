@@ -15,7 +15,7 @@ func TestSanity(t *testing.T) {
 func TestExtract(t *testing.T) {
 	want := linkextractor.Link{Href: "/link", Text: "Link text"}
 
-	got := linkextractor.Extract("<a href=\"/link\">Link text</a>")
+	got := linkextractor.Extract("<a href=\"/link\">Link text</a>")[0]
 
 	if want.Href != got.Href {
 		t.Errorf("want %s, got %s", want.Href, got.Href)

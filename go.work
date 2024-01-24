@@ -4,4 +4,5 @@ use (
 	./01-quiz
 	./02-urlshort
 	./03-cyoa
+	./04-linkextracter
 )
